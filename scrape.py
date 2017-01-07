@@ -60,13 +60,15 @@ def start_crawling(req_obj):
 
         try:
             data["data"] = extractor.extract_data(req)
+            data["start_url"] = req["url"]
+            data["html"] = req["html"]
         except Exception as ex:
             # print >>sys.stderr, "DATA\n", ex
             traceback.print_exc(file=sys.stderr)
             continue
 
-        if data["data"]:
-            return data["data"]
+        if data:
+            return data
 
 
 if __name__ == '__main__':
