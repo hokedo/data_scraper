@@ -68,7 +68,7 @@ def start_crawling(req_obj):
             continue
 
         if data:
-            return data
+            yield data
 
 
 if __name__ == '__main__':
