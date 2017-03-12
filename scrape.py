@@ -10,7 +10,7 @@ import traceback
 from collections import deque
 
 
-def start_crawling(req_obj):
+def start_crawling(req_obj, proxies={}):
     start_url = req_obj.get("url")
     domain = req_obj.get("domain")
     session = requests.Session()
@@ -28,7 +28,8 @@ def start_crawling(req_obj):
                                       "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16",
                                       "Accept-Language": "en-US,en;q=0.8,de-DE;q=0.6,de;q=0.4,en;q=0.2",
                                       "Accept-Charset": "utf-8;q=0.7,*;q=0.7"
-                                  })
+                                  },
+                                  proxies=proxies)
 
         except (requests.exceptions.RequestException, socket.error) as ex:
             print >> sys.stderr, ex
