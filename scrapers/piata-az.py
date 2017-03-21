@@ -31,6 +31,8 @@ def extract_urls(req):
 		doc = pq(req["html"])
 		for link in doc("a.link_totanunt"):
 			urls.append(pq(link).attr("href"))
+		next_page = doc("a.next_page:eq(0)").attr("href")
+		urls.append(next_page)
 		return urls
 
 def text(selector, pq_obj):
@@ -38,6 +40,6 @@ def text(selector, pq_obj):
 
 if __name__ == "__main__":
 		for line in sys.stdin:
-				req = json.loads(line.strip())
-				data = extract_data(req)
-				print json.dumps(data)
+			req = json.loads(line.strip())
+			data = extract_data(req)
+			print json.dumps(data)

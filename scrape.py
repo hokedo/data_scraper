@@ -82,5 +82,5 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(os.path.dirname(__file__), "scrapers"))
     for line in sys.stdin:
         request_obj = json.loads(line.strip())
-        data = start_crawling(request_obj)
-        print json.dumps(data)
+        for data in start_crawling(request_obj):
+            print json.dumps(data)
