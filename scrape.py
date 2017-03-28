@@ -12,6 +12,7 @@ from collections import deque
 
 logging.basicConfig()
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def start_crawling(req_obj, proxies={}):
     start_url = req_obj.get("url")
@@ -36,8 +37,10 @@ def start_crawling(req_obj, proxies={}):
                                   proxies=proxies)
 
         except (requests.exceptions.RequestException, socket.error) as ex:
-            print >> sys.stderr, ex
-            print >> sys.stderr, url
+            #print >> sys.stderr, ex
+            #print >> sys.stderr, url
+            logger.error(str(ex))
+            logger.error(url)
             continue
 
         if res is None: continue
@@ -48,7 +51,8 @@ def start_crawling(req_obj, proxies={}):
         try:
             extractor = __import__(domain)
         except ImportError as ex:
-            print >> sys.stderr, ex
+            #print >> sys.stderr, ex
+            logger.error(str(ex))
             continue
 
         try:
@@ -71,7 +75,8 @@ def start_crawling(req_obj, proxies={}):
             data["html"] = req["html"]
         except Exception as ex:
             # print >>sys.stderr, "DATA\n", ex
-            traceback.print_exc(file=sys.stderr)
+            #traceback.print_exc(file=sys.stderr)
+            logger.error(str(ex))
             continue
 
         if data:
