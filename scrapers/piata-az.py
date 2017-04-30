@@ -19,9 +19,15 @@ def extract_data(req):
 			data["type"] = text(".Compartim\.", doc)
 			data["date"] = text("#social-data", doc)
 
-			street = text("div.actiuni-col-a:contains('Strada')+div.actiuni-col-b", doc)
+			area = text("#detaliu-localitate", doc)
+			address = [area]
 
-			data["address"] = "{}, {}".format(street or "", text("#detaliu-localitate", doc))
+			street = text("div.actiuni-col-a:contains('Strada')+div.actiuni-col-b", doc)
+			street = street.strip(" -")
+			if street:
+				address.append(street)
+
+			data["address"] = ", ".join(address)
 
 			selectors_extra = [
 							"#social-vizualizari",
