@@ -11,10 +11,17 @@ def extract_data(req):
 		if re.search(r"www\.piata-az\.ro/anunturi/oras-cluj-napoca/\d+", req["url"]):
 			doc = pq(req["html"])
 			data["title"] = text("h1", doc)
-			data["address"] = text("#detaliu-localitate", doc)
-			data["price"] = text("#detaliu-pret-mob:eq(0)", doc)
+
+			price = text("#detaliu-pret-mob:eq(0)", doc)
+			price = re.match(r"(\d+)\s*([A-z]+)", price)
+			data["price"] = float(price.group(1))
+			data["currency"] = price.group(2)
 			data["type"] = text(".Compartim\.", doc)
 			data["date"] = text("#social-data", doc)
+
+			street = text("div.actiuni-col-a:contains('Strada')+div.actiuni-col-b", doc)
+
+			data["address"] = "{}, {}".format(street or "", text("#detaliu-localitate", doc))
 
 			selectors_extra = [
 							"#social-vizualizari",
