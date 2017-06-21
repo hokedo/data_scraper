@@ -40,9 +40,9 @@ def extract_data(req):
 def extract_urls(req):
 	urls = []
 	doc = pq(req["html"])
-	for link in doc("li.next a"):
+	for link in doc(".estate-listing h2 a"):
 		urls.append(pq(link).attr("href"))
-	next_page = doc("li.estate-listing exclusivity h2 a").attr("href")
+	next_page = doc("li.next a").attr("href")
 	if next_page:
 		urls.append(next_page)
 	return urls
